@@ -2,7 +2,7 @@
 
 经典 1985 坦克大战（Battle City）复刻版，纯原生 HTML5 Canvas + JavaScript 实现，零依赖、零素材——8-bit 背景音乐与音效全部由 WebAudio 实时合成。
 
-- 在线试玩：<https://godlikecheng.github.io/tank-battle/>
+- 在线试玩：<https://godlikecheng.github.io/>
 - 技术栈：HTML5 Canvas / WebAudio / 原生 JavaScript，无需构建
 
 ## 游戏简介
