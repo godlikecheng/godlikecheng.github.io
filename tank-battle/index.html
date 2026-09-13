@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>坦克大战 Tank Battle</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="game-wrap">
+  <div>
+    <h1>坦克大战</h1>
+    <div class="stage">
+      <canvas id="cv" width="780" height="780"></canvas>
+      <div class="overlay" id="overlay">
+        <div class="big" id="ov-title">坦克大战</div>
+        <div class="sub" id="ov-sub">经典 1985 复刻版<br>保护你的基地，消灭所有敌人坦克<br><br>点击「开始游戏」或按 回车</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h2>战场情报</h2>
+    <div class="hud">
+      <span class="k">得分</span><span class="v" id="hud-score">0</span>
+      <span class="k">最高分</span><span class="v" id="hud-hi">0</span>
+      <span class="k">关卡</span><span class="v" id="hud-level">1</span>
+      <span class="k">剩余敌人</span><span class="v" id="hud-enemy">0</span>
+      <span class="k">生命 P1</span><span class="v" id="hud-lives">2</span>
+      <span class="k" id="hud-lives2-k" style="display:none">生命 P2</span><span class="v" id="hud-lives2" style="display:none">-</span>
+      <span class="k">场上敌人</span><span class="v" id="hud-field">0</span>
+    </div>
+    <div id="enemy-icons"></div>
+
+    <div class="btns">
+      <button id="btn-start">开始游戏</button>
+      <button id="btn-pause" class="gray" disabled>暂停 (P)</button>
+      <button id="btn-restart" class="gray">重新开始</button>
+      <button id="btn-editor" class="gray">关卡编辑器</button>
+    </div>
+
+    <fieldset>
+      <legend>游戏配置
+        <span class="help-wrap">
+          <span class="help-icon">?</span>
+          <span class="help-tip">
+            <div><b>游戏模式</b>单人 / 双人合作，双人时 P2 生命独立显示</div>
+            <div><b>游戏难度</b>影响敌人速度、子弹速度、开火频率与出生间隔，重新开始后生效</div>
+            <div><b>玩家生命数</b>本局可用生命储备（1-9），重新开始后生效</div>
+            <div><b>每关敌人数量</b>本关需消灭的敌人总数（5-40），重新开始后生效</div>
+            <div><b>同时在场敌人</b>场上最多同时出现的敌人坦克数（2-6 辆）</div>
+            <div><b>起始关卡</b>从已解锁的关卡中选择开始，通关解锁下一关</div>
+            <div><b>自定义关卡</b>第一关使用关卡编辑器保存的地图，通关后自动恢复经典关卡推进</div>
+            <div><b>背景音乐</b>合成 8-bit 旋律音量 4 档，立即生效</div>
+            <div><b>音效</b>开炮 / 爆炸 / 引擎等音效开关，立即生效</div>
+            <div><b>显示网格</b>在画布上显示半格参考线，立即生效</div>
+          </span>
+        </span>
+      </legend>
+      <div class="cfg-row">
+        <label>游戏模式</label>
+        <select id="cfg-mode">
+          <option value="1" selected>单人</option>
+          <option value="2">双人合作</option>
+        </select>
+      </div>
+      <div class="cfg-row">
+        <label>游戏难度</label>
+        <select id="cfg-difficulty">
+          <option value="0">简单</option>
+          <option value="1" selected>普通</option>
+          <option value="2">困难</option>
+        </select>
+      </div>
+      <div class="cfg-row">
+        <label>玩家生命数</label>
+        <input type="number" id="cfg-lives" min="1" max="9" value="2">
+      </div>
+      <div class="cfg-row">
+        <label>每关敌人数量</label>
+        <input type="number" id="cfg-enemies" min="5" max="40" value="20">
+      </div>
+      <div class="cfg-row">
+        <label>同时在场敌人</label>
+        <select id="cfg-maxfield">
+          <option value="2">2 辆</option>
+          <option value="3">3 辆</option>
+          <option value="4" selected>4 辆</option>
+          <option value="6">6 辆</option>
+        </select>
+      </div>
+      <div class="cfg-row">
+        <label>起始关卡</label>
+        <select id="cfg-start"></select>
+      </div>
+      <div class="cfg-row">
+        <label>自定义关卡</label>
+        <input type="checkbox" id="cfg-custom">
+      </div>
+      <div class="cfg-row">
+        <label>背景音乐</label>
+        <select id="cfg-bgm">
+          <option value="0">关闭</option>
+          <option value="1">低</option>
+          <option value="2" selected>中</option>
+          <option value="3">高</option>
+        </select>
+      </div>
+      <div class="cfg-row">
+        <label>音效</label>
+        <input type="checkbox" id="cfg-sound" checked>
+      </div>
+      <div class="cfg-row">
+        <label>显示网格</label>
+        <input type="checkbox" id="cfg-grid">
+      </div>
+      <div class="tip">※ 难度 / 生命 / 敌人数量 / 起始关卡在「重新开始」后生效；音效、音乐与网格立即生效。通关可解锁后续关卡；得分达到 20000 奖励 1 条生命。</div>
+    </fieldset>
+
+    <div class="keys">
+      <b>P1</b> 方向键 移动 · 空格 开火<br>
+      <b>P2</b> W A S D 移动 · J 开火（双人模式）<br>
+      <b>P</b> 暂停 / 继续 · <b>回车</b> 开始 / 重新开始<br>
+      ★ 消灭红色闪烁的敌人会掉落道具
+    </div>
+  </div>
+</div>
+
+<!-- 关卡编辑器弹窗 -->
+<div id="editor-modal" class="modal hidden">
+  <div class="modal-box">
+    <div class="modal-head">
+      <span>关卡编辑器</span>
+      <button id="ed-close" class="gray" title="关闭">×</button>
+    </div>
+    <canvas id="ecv" width="390" height="390"></canvas>
+    <div class="palette" id="palette"></div>
+    <div class="btns">
+      <button id="ed-clear" class="gray">清空</button>
+      <button id="ed-play">试玩</button>
+      <button id="ed-save" class="gray">保存</button>
+      <button id="ed-export" class="gray">导出码</button>
+      <button id="ed-import" class="gray">导入码</button>
+    </div>
+    <textarea id="ed-code" placeholder="关卡分享码：导出后复制给朋友，或粘贴后点「导入码」"></textarea>
+    <div class="tip">左键绘制 / 右键擦除，按住拖动连刷；金框为基地、红框为敌方出生点、绿框为玩家出生点（自动布置）。「试玩」立即以当前敌人配置开始本关。</div>
+  </div>
+</div>
+
+<!-- 加载顺序即依赖顺序：常量 → 地图 → 实体 → 游戏逻辑 → 渲染 → 入口 → 编辑器 -->
+<script src="js/constants.js"></script>
+<script src="js/map.js"></script>
+<script src="js/entities.js"></script>
+<script src="js/game.js"></script>
+<script src="js/render.js"></script>
+<script src="js/main.js"></script>
+<script src="js/editor.js"></script>
+</body>
+</html>

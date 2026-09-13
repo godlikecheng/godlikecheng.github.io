@@ -1,0 +1,138 @@
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: #1a1c20;
+  color: #d8d8d8;
+  font-family: "Courier New", "Microsoft YaHei", monospace;
+  display: flex;
+  justify-content: center;
+  padding: 16px;
+  min-height: 100vh;
+}
+.game-wrap { display: flex; gap: 16px; align-items: stretch; flex-wrap: wrap; justify-content: center; }
+h1 { font-size: 20px; color: #f6c945; letter-spacing: 2px; text-align: center; margin-bottom: 8px; }
+.stage { position: relative; }
+canvas {
+  display: block;
+  background: #000;
+  border: 4px solid #555;
+  border-radius: 4px;
+  image-rendering: pixelated;
+}
+.overlay {
+  position: absolute; inset: 4px;
+  background: rgba(0,0,0,.72);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  text-align: center; gap: 12px;
+  border-radius: 2px;
+}
+.overlay.hidden { display: none; }
+.overlay .big { font-size: 28px; color: #f6c945; letter-spacing: 4px; }
+.overlay .sub { font-size: 14px; color: #aaa; line-height: 1.8; }
+.panel {
+  width: 280px;
+  background: #23262b;
+  border: 2px solid #3a3f46;
+  border-radius: 6px;
+  padding: 12px 14px;
+  font-size: 13px;
+}
+.panel h2 { font-size: 14px; color: #f6c945; border-bottom: 1px solid #3a3f46; padding-bottom: 6px; margin-bottom: 8px; }
+.hud { display: grid; grid-template-columns: 1fr 1fr; gap: 4px 10px; margin-bottom: 10px; }
+.hud .k { color: #8a9099; }
+.hud .v { color: #fff; text-align: right; font-weight: bold; }
+.btns { display: flex; flex-direction: column; gap: 6px; margin: 10px 0; }
+button {
+  padding: 8px 10px;
+  background: #f6c945; color: #222;
+  border: none; border-radius: 4px;
+  font-weight: bold; font-size: 13px; cursor: pointer;
+  font-family: inherit;
+}
+button:hover { filter: brightness(1.1); }
+button.gray { background: #4a5058; color: #e8e8e8; }
+fieldset {
+  border: 1px solid #3a3f46; border-radius: 4px;
+  margin-top: 10px; padding: 8px 10px;
+}
+legend { color: #8a9099; font-size: 12px; padding: 0 4px; }
+
+/* 配置帮助问号 + 悬停说明 */
+.help-wrap { position: relative; display: inline-flex; margin-left: 4px; vertical-align: middle; }
+.help-icon {
+  width: 15px; height: 15px; border-radius: 50%;
+  background: #4a5058; border: 1px solid #6a7078;
+  color: #f6c945; font-size: 11px; font-weight: bold;
+  display: inline-flex; align-items: center; justify-content: center;
+  cursor: help; user-select: none;
+}
+.help-wrap:hover .help-icon { background: #f6c945; color: #222; border-color: #f6c945; }
+.help-tip {
+  display: none;
+  position: absolute; right: -6px; bottom: calc(100% + 8px);
+  width: 264px; max-height: 70vh; overflow-y: auto; z-index: 60;
+  background: #16181b; border: 1px solid #f6c945; border-radius: 6px;
+  padding: 9px 11px;
+  color: #b8bdc4; font-size: 11px; font-weight: normal; letter-spacing: 0;
+  text-align: left; line-height: 1.6;
+  box-shadow: 0 6px 20px rgba(0,0,0,.55);
+  cursor: default;
+}
+.help-tip div { margin: 2px 0; }
+.help-tip b { color: #f6c945; font-weight: bold; margin-right: 6px; }
+.help-wrap:hover .help-tip { display: block; }
+.cfg-row { display: flex; justify-content: space-between; align-items: center; margin: 7px 0; gap: 8px; }
+.cfg-row label { color: #b8bdc4; flex-shrink: 0; }
+.cfg-row select, .cfg-row input[type=number] {
+  background: #16181b; color: #fff; border: 1px solid #3a3f46;
+  border-radius: 3px; padding: 3px 6px; width: 110px; font-family: inherit;
+}
+.cfg-row input[type=checkbox] { width: auto; }
+.tip { color: #6d747c; font-size: 11px; margin-top: 6px; line-height: 1.5; }
+.keys { color: #8a9099; font-size: 12px; line-height: 1.9; margin-top: 10px; border-top: 1px dashed #3a3f46; padding-top: 8px; }
+.keys b { color: #d8d8d8; background: #16181b; border: 1px solid #3a3f46; border-radius: 3px; padding: 1px 5px; font-weight: normal; }
+
+/* 每关结算表格 */
+.overlay .stats { border-collapse: collapse; margin: 2px auto; font-size: 13px; color: #ccc; }
+.overlay .stats td { padding: 2px 12px; text-align: left; }
+.overlay .stats td:last-child { color: #f6c945; font-weight: bold; text-align: right; }
+
+/* 剩余敌人图标列（经典 HUD） */
+.hidden { display: none !important; }
+#enemy-icons { display: flex; flex-wrap: wrap; gap: 3px; margin: -4px 0 10px; min-height: 12px; }
+.eicon { width: 12px; height: 12px; background: #4a5058; border-radius: 2px; position: relative; }
+.eicon::after { content: ""; position: absolute; left: 3px; top: 3px; width: 6px; height: 6px; background: #9aa0a6; }
+
+/* 关卡编辑器弹窗 */
+.modal {
+  position: fixed; inset: 0; z-index: 100;
+  background: rgba(0,0,0,.65);
+  display: flex; align-items: center; justify-content: center;
+}
+.modal.hidden { display: none; }
+.modal-box {
+  width: 520px; max-height: 94vh;
+  overflow-y: auto; overflow-x: hidden;
+  background: #23262b; border: 2px solid #3a3f46; border-radius: 8px;
+  padding: 12px 16px 14px;
+  box-shadow: 0 10px 40px rgba(0,0,0,.5);
+}
+.modal-head {
+  display: flex; justify-content: space-between; align-items: center;
+  color: #f6c945; font-size: 15px; font-weight: bold; letter-spacing: 1px;
+  border-bottom: 1px solid #3a3f46; padding-bottom: 6px; margin-bottom: 6px;
+}
+.modal-head button { padding: 2px 10px; font-size: 14px; }
+#editor-modal canvas { width: 100%; height: auto; margin: 6px auto; display: block; cursor: crosshair; }
+.palette { display: flex; flex-wrap: wrap; gap: 4px; }
+.pal {
+  padding: 5px 8px; font-size: 12px; border-radius: 3px;
+  border: 1px solid #3a3f46; background: #16181b; color: #ccc; cursor: pointer;
+}
+.pal.on { outline: 2px solid #f6c945; color: #fff; }
+#editor-modal .btns { flex-direction: row; flex-wrap: wrap; }
+#editor-modal .btns button { flex: 1; padding: 6px 4px; font-size: 12px; }
+#ed-code {
+  width: 100%; height: 56px; background: #16181b; color: #9aa0a6;
+  border: 1px solid #3a3f46; border-radius: 3px; font-family: monospace;
+  font-size: 11px; padding: 4px; margin-top: 6px; resize: vertical;
+}
