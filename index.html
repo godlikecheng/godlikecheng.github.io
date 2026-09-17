@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>游戏合集 · godlikecheng.github.io</title>
+  <style>
+    :root {
+      --bg: #0f1216;
+      --panel: #1a1f26;
+      --border: #2a3038;
+      --text: #e6e8eb;
+      --muted: #8a919c;
+      --accent: #4fc3f7;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Segoe UI", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    header {
+      text-align: center;
+      padding: 56px 24px 32px;
+    }
+    header h1 {
+      font-size: 32px;
+      letter-spacing: 2px;
+    }
+    header p {
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: 15px;
+    }
+    main {
+      flex: 1;
+      max-width: 960px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 8px 24px 48px;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 20px;
+    }
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      transition: transform .15s ease, border-color .15s ease;
+    }
+    .card:hover {
+      transform: translateY(-3px);
+      border-color: var(--accent);
+    }
+    .card .icon {
+      font-size: 40px;
+      line-height: 1;
+    }
+    .card h2 {
+      font-size: 20px;
+    }
+    .card .desc {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.6;
+      flex: 1;
+    }
+    .card .links {
+      display: flex;
+      gap: 10px;
+    }
+    .card .links a {
+      color: var(--accent);
+      text-decoration: none;
+      font-size: 14px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 6px 14px;
+      transition: background .15s ease;
+    }
+    .card .links a:hover {
+      background: rgba(79, 195, 247, .12);
+    }
+    footer {
+      text-align: center;
+      padding: 24px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>🎮 游戏合集</h1>
+    <p>纯原生 HTML5 Canvas + JavaScript 实现，零依赖，开箱即玩</p>
+  </header>
+
+  <main>
+    <section class="card">
+      <div class="icon">🛡️</div>
+      <h2>坦克大战 Tank Battle</h2>
+      <p class="desc">经典 1985 坦克大战（Battle City）复刻版：35 关、4 种敌人、6 种道具、5 种地形，支持单人 / 双人合作与关卡编辑器，8-bit 音乐全合成。</p>
+      <div class="links">
+        <a href="tank-battle/">开始游戏</a>
+        <a href="doc/tank-battle.md">说明文档</a>
+      </div>
+    </section>
+  </main>
+
+  <footer>更多游戏持续添加中…</footer>
+</body>
+</html>
