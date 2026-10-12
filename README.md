@@ -11,6 +11,7 @@
 | 游戏 | 在线试玩 | 说明文档 |
 |------|----------|----------|
 | 🎮 坦克大战（Tank Battle） | [立即试玩](https://godlikecheng.github.io/tank-battle/) | [游戏说明](doc/tank-battle.md) |
+| 🍄 超级马力欧兄弟（Super Mario Bros） | [立即试玩](https://godlikecheng.github.io/super-mario-bros/) | [游戏说明](doc/super-mario-bros.md) |
 
 更多游戏持续添加中……
 
@@ -20,8 +21,13 @@
 .
 ├── index.html        # 目录页面：记录各游戏入口
 ├── doc/              # 各游戏的说明文档
-│   └── tank-battle.md
+│   ├── tank-battle.md
+│   └── super-mario-bros.md
 ├── tank-battle/      # 游戏：坦克大战
+│   ├── index.html
+│   ├── css/
+│   └── js/
+├── super-mario-bros/ # 游戏：超级马力欧兄弟
 │   ├── index.html
 │   ├── css/
 │   └── js/
